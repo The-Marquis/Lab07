@@ -147,6 +147,7 @@
     <ClCompile Include="uiInteract.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="direction.h" />
     <ClInclude Include="ground.h" />
     <ClInclude Include="position.h" />
     <ClInclude Include="projectile.h" />

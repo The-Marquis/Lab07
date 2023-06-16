@@ -68,6 +68,9 @@
     <ClInclude Include="testProjectile.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="direction.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
