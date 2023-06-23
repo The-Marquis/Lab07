@@ -24,6 +24,8 @@ class TestVelocity;
 class Velocity
 {
 public:
+	friend::TestVelocity;
+
 	Velocity() { this->dx = 0; this->dy = 0; };
 	double getDX()
 	{
@@ -35,6 +37,7 @@ public:
 	}
 	double getSpeed()
 	{
+		speed = sqrt((dx * dx) + (dy * dy));
 		return speed;
 	}
 	Direction getDirection()
@@ -59,10 +62,7 @@ public:
 	{
 		
 	}
-	void setSpeed(double speed)
-	{
-		this->speed = speed;
-	}
+	
 	void addDX(double dx)
 	{
 		this->dx += dx;
@@ -73,12 +73,13 @@ public:
 	}
 	void addV(Velocity velocity)
 	{
-
+		this->dx = velocity.dx;
+		this->dy = velocity.dy;
 	}
 	void reverse()
 	{
-		this->dx = -1 * dx;
-		this->dy = -1 * dy;
+		this->dx = dx * -1;
+		this->dy = dy * -1;
 	}
 private:
 	double dx;

@@ -39,13 +39,19 @@ public:
         addDX2();
         addDY2();
 
-        setSpeed();
-
+        getSpeed();
+        getSpeed2();
         reverse();
         reverse2();
     }
 
 private:
+
+    bool closeEnough(double value, double test, double tolerance)const
+    {
+        double difference = value - test;
+        return (difference >= -tolerance) && (difference <= tolerance);
+    }
 
     // Test the default constructor
     void constructor()
@@ -70,7 +76,7 @@ private:
         v.setDX(5.4);
 
         // verify
-        assert(v.getDX() == 5.4);
+        assert(v.dx == 5.4);
         
         // teardown
 
@@ -83,7 +89,7 @@ private:
         v.setDY(8.3);
 
         // verify
-        assert(v.getDY() == 8.3);
+        assert(v.dy == 8.3);
         
         // teardown
 
@@ -97,23 +103,42 @@ private:
         v.setDxDy(8.3, 5.4);
 
         // verify
-        assert(v.getDX() == 8.3);
-        assert(v.getDY() == 5.4);
+        assert(v.dx == 8.3);
+        assert(v.dy == 5.4);
 
         // teardown
     }
 
-    void setSpeed()
+    void getSpeed2()
     {
         // setup
         Velocity v;
         // exercise
 
-        v.setSpeed(8.3);
+        v.setDX(3.0);
+        v.setDY(4.0);
+
+        double speed = v.getSpeed();
+        // verify
+        assert(closeEnough(speed, 5.00, 0.0001));
+      
+
+        // teardown
+    }
+    void getSpeed()
+    {
+        // setup
+        Velocity v;
+        // exercise
+
+        v.setDX(1.0);
+        v.setDY(0.0);
+
+        double speed = v.getSpeed();
 
         // verify
-        assert(v.getSpeed() == 8.3);
-      
+        assert(closeEnough(speed, 1.00, 0.0001));
+
 
         // teardown
     }
@@ -126,7 +151,7 @@ private:
         v.addDX(2.0);
 
         // verify
-        assert(v.getDX() == 8.3 + 2.0);
+        assert(v.dx == 8.3 + 2.0);
 
         // teardown
 
@@ -140,7 +165,7 @@ private:
         v.addDX(-1.9);
 
         // verify
-        assert(v.getDX() == -0.1 + -1.9);
+        assert(v.dx == -0.1 + -1.9);
 
         // teardown
 
@@ -154,7 +179,7 @@ private:
         v.addDY(2.0);
 
         // verify
-        assert(v.getDY() == 8.3 + 2.0);
+        assert(v.dy == 8.3 + 2.0);
 
         // teardown
 
@@ -168,7 +193,7 @@ private:
         v.addDY(-2.8);
 
         // verify
-        assert(v.getDY() == -2.8 + -7.2);
+        assert(v.dy == -2.8 + -7.2);
 
         // teardown
 
@@ -179,11 +204,11 @@ private:
         // exercise
 
         v.setDY(8.3);
-        v.addDY(2.0);
-
+        v.setDX(2.0);
+        v.reverse();
         // verify
-        assert(v.getDY() == -8.3);
-        assert(v.getDX() == -2.0);
+        assert(v.dy == -8.3);
+        assert(v.dx == -2.0);
         // teardown
 
     }
@@ -193,11 +218,11 @@ private:
         // exercise
 
         v.setDY(-8.3);
-        v.addDY(-2.0);
-
+        v.setDX(-2.0);
+        v.reverse();
         // verify
-        assert(v.getDY() == 8.3);
-        assert(v.getDX() == 2.0);
+        assert(v.dy == 8.3);
+        assert(v.dx == 2.0);
         // teardown
 
     }
