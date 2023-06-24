@@ -10,11 +10,6 @@ public:
 	{
 		constructor();
 
-		setMass();
-		setMass2();
-
-		setRadius();
-		setRadius2();
 	}
 private:
 	void constructor()
@@ -26,57 +21,61 @@ private:
 		// verify
 		assert(p.getMass() == 0.0);
 		assert(p.getRadius() == 0.0);
+		assert(p.getFlightTime() == 0.0);
+		assert(p.getFlightDistance() == 0.0);
+		assert(p.getSpeed() == 0.0);
 		// teardown
 
 	}
 
-	void setMass()
+	
+
+	void advance1_idle()
 	{
+		// advance when not fired
 		// setup
 		Projectile p;
 		// exercise
-		p.setMass(10.0);
-
+		p.advance();
 		// verify
-		assert(p.getMass() == 10.0);
+		assert(p.getFlightTime() == 0.0);
+		assert(p.getFlightDistance() == 0.0);
+		assert(p.getSpeed() == 0.0);
 		// teardown
 
 	}
 
-	void setMass2()
+	void advance2_fire()
 	{
+		// advance when fired once
 		// setup
 		Projectile p;
 		// exercise
-		p.setMass(-10.0);
+		p.advance();
+		p.fire();
 		// verify
-		assert(p.getMass() == 0.0);
+		assert(p.getFlightTime() == 0.0);
+		assert(p.getFlightDistance() == 0.0);
+		assert(p.getSpeed() == 0.0);
 		// teardown
 
 	}
 
-	void setRadius()
+
+	void testReset()
 	{
+		// advance, fire once, advance, and reset
 		// setup
 		Projectile p;
 		// exercise
-		p.setRadius(10.0);
-
+		p.advance();
+		p.fire();
+		p.advance();
+		p.reset();
 		// verify
-		assert(p.getRadius() == 10.0);
+		assert(p.getFlightTime() == 0.0);
+		assert(p.getFlightDistance() == 0.0);
+		assert(p.getSpeed() == 0.0);
 		// teardown
-
-	}
-
-	void setRadius2()
-	{
-		// setup
-		Projectile p;
-		// exercise
-		p.setRadius(-10.0);
-		// verify
-		assert(p.getRadius() == 0.0);
-		// teardown
-
 	}
 };
