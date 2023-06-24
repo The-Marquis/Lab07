@@ -40,10 +40,10 @@ public:
 		speed = sqrt((dx * dx) + (dy * dy));
 		return speed;
 	}
-	Direction getDirection()
+	Direction* getDirection()
 	{
-		Direction direction;
-		return direction;
+		
+		return this->d;
 	}
 	void setDX(double dx)
 	{
@@ -58,9 +58,9 @@ public:
 		this->dx = dx;
 		this->dy = dy;
 	}
-	void setDirection(Direction direction)
+	void setDirection(Direction *direction)
 	{
-		
+		this->d = direction;
 	}
 	
 	void addDX(double dx)
@@ -85,4 +85,5 @@ private:
 	double dx;
 	double dy;
 	double speed;
+	Direction *d;
 };
