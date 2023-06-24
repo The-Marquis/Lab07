@@ -12,6 +12,7 @@
 #pragma once
 
 #include "velocity.h"
+#include "direction.h"
 #include <cassert>
 #include <vector>
 
@@ -39,10 +40,14 @@ public:
         addDX2();
         addDY2();
 
-        getSpeed();
-        getSpeed2();
+        getSpeedDiagonal();
+        getSpeedHorizontal();
+        getSpeedVertical();
+
         reverse();
-        reverse2();
+        reverseNegative();
+
+        getDirection();
     }
 
 private:
@@ -109,7 +114,7 @@ private:
         // teardown
     }
 
-    void getSpeed2()
+    void getSpeedDiagonal()
     {
         // setup
         Velocity v;
@@ -125,7 +130,7 @@ private:
 
         // teardown
     }
-    void getSpeed()
+    void getSpeedHorizontal()
     {
         // setup
         Velocity v;
@@ -133,6 +138,23 @@ private:
 
         v.setDX(1.0);
         v.setDY(0.0);
+
+        double speed = v.getSpeed();
+
+        // verify
+        assert(closeEnough(speed, 1.00, 0.0001));
+
+
+        // teardown
+    }
+    void getSpeedVertical()
+    {
+        // setup
+        Velocity v;
+        // exercise
+
+        v.setDX(0.0);
+        v.setDY(1.0);
 
         double speed = v.getSpeed();
 
@@ -212,7 +234,7 @@ private:
         // teardown
 
     }
-    void reverse2()
+    void reverseNegative()
     {  // setup
         Velocity v;
         // exercise
@@ -223,6 +245,19 @@ private:
         // verify
         assert(v.dy == 8.3);
         assert(v.dx == 2.0);
+        // teardown
+
+    }
+    void getDirection()
+    {  // setup
+        Velocity v;
+        // exercise
+        Direction d;
+        v.setDirection(&d);
+
+        // verify
+        assert(v.getDirection() == &d);
+        
         // teardown
 
     }
