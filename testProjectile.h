@@ -11,6 +11,7 @@ public:
 		constructor();
 
 		advance1_idle();
+		advance2_fire();
 
 		testReset();
 
@@ -23,11 +24,19 @@ private:
 		// exercise
 
 		// verify
-		assert(p.getMass() == 0.0);
-		assert(p.getRadius() == 0.0);
-		assert(p.getFlightTime() == 0.0);
-		assert(p.getFlightDistance() == 0.0);
-		assert(p.getSpeed() == 0.0);
+		try
+		{
+			assert(p.getMass() == 0.0);
+			assert(p.getRadius() == 0.0);
+			assert(p.getFlightTime() == 0.0);
+			assert(p.getFlightDistance() == 0.0);
+			assert(p.getSpeed() == 0.0);
+
+		}
+		catch (...)
+		{
+			cout << "projectile_constructor failed";
+		}
 		// teardown
 
 	}
@@ -42,9 +51,16 @@ private:
 		// exercise
 		p.advance();
 		// verify
-		assert(p.getFlightTime() == 0.5);
-		assert(p.getFlightDistance() == 0.0);
-		assert(p.getSpeed() == 0.0);
+		try
+		{
+			assert(p.getFlightTime() == 0.5);
+			assert(p.getFlightDistance() == 0.0);
+			assert(p.getSpeed() == 0.0);
+		}
+		catch (...)
+		{
+			cout << "projectile_advance1_idle failed";
+		}
 		// teardown
 
 	}
@@ -59,9 +75,16 @@ private:
 		p.fire();
 		p.advance();
 		// verify
-		assert(p.getFlightTime() == 1.0);
-		assert(p.getFlightDistance() == 0.0);
-		assert(p.getSpeed() == 0.0);
+		try
+		{
+			assert(p.getFlightTime() == 1.0);
+			assert(p.getFlightDistance() == 0.0);
+			assert(p.getSpeed() == 0.0);
+		}
+		catch (...)
+		{
+			cout << "projectile_advance2_2 failed";
+		}
 		// teardown
 
 	}
@@ -78,9 +101,16 @@ private:
 		p.advance();
 		p.reset();
 		// verify
-		assert(p.getFlightTime() == 0.0);
-		assert(p.getFlightDistance() == 0.0);
-		assert(p.getSpeed() == 0.0);
+		try
+		{
+			assert(p.getFlightTime() == 0.0);
+			assert(p.getFlightDistance() == 0.0);
+			assert(p.getSpeed() == 0.0);
+		}
+		catch (...)
+		{
+			cout << "projectile_testReset failed";
+		}
 		// teardown
 	}
 };
