@@ -10,6 +10,10 @@ public:
 	{
 		constructor();
 
+		advance1_idle();
+
+		testReset();
+
 	}
 private:
 	void constructor()
@@ -38,7 +42,7 @@ private:
 		// exercise
 		p.advance();
 		// verify
-		assert(p.getFlightTime() == 0.0);
+		assert(p.getFlightTime() == 0.5);
 		assert(p.getFlightDistance() == 0.0);
 		assert(p.getSpeed() == 0.0);
 		// teardown
@@ -53,8 +57,9 @@ private:
 		// exercise
 		p.advance();
 		p.fire();
+		p.advance();
 		// verify
-		assert(p.getFlightTime() == 0.0);
+		assert(p.getFlightTime() == 1.0);
 		assert(p.getFlightDistance() == 0.0);
 		assert(p.getSpeed() == 0.0);
 		// teardown
