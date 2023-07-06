@@ -3,7 +3,7 @@
 #include <cassert>
 #include <vector>
 
-class testProjectile
+class TestProjectile
 {
 public:
 	void run()
