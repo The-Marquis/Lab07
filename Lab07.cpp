@@ -17,6 +17,7 @@
 #include "ground.h"     // for GROUND
 #include "position.h"   // for POSITION
 #include "test.h"
+#include "projectile.h"
 using namespace std;
 
 /*************************************************************************
@@ -54,7 +55,9 @@ public:
    Position  ptUpperRight;        // size of the screen
    double angle;                  // angle of the howitzer 
    double time;                   // amount of time since the last firing
+   Projectile projectile;
 };
+
 
 /*************************************
  * All the interesting work happens here, when
@@ -92,8 +95,8 @@ void callBack(const Interface* pUI, void* p)
    //
    // perform all the game logic
    //
-
-   // advance time by half a second.
+   pDemo->projectile.advance();
+  // advance time by half a second.
    pDemo->time += 0.5;
 
    // move the projectile across the screen
@@ -120,8 +123,9 @@ void callBack(const Interface* pUI, void* p)
    gout.drawHowitzer(pDemo->ptHowitzer, pDemo->angle, pDemo->time);
 
    // draw the projectile
-   for (int i = 0; i < 20; i++)
-      gout.drawProjectile(pDemo->projectilePath[i], 0.5 * (double)i);
+   //for (int i = 0; i < 20; i++)
+   //   gout.drawProjectile(pDemo->projectilePath[i], 0.5 * (double)i);
+   pDemo->projectile.draw();
 
    // draw some text on the screen
    gout.setf(ios::fixed | ios::showpoint);

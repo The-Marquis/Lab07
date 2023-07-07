@@ -81,6 +81,16 @@ public:
 		this->dx = dx * -1;
 		this->dy = dy * -1;
 	}
+	double computeVerticalComponent(double a, double total)
+	{
+		double y = cos(a) * total;
+		return y;
+	}
+	double computeHorizontalComponent(double a, double total)
+	{
+		double x = sin(a) * total;
+		return x;
+	}
 private:
 	double dx;
 	double dy;

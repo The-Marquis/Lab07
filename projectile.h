@@ -3,6 +3,7 @@
 #include "position.h"
 #include "velocity.h"
 #include "direction.h"
+#include "uiDraw.h"  
 #include <cmath>
 #include <vector>
 #include <algorithm>
@@ -16,15 +17,18 @@ private:
 	vector<Position> flightPathPosition{};
 	vector<Velocity> flightPathVelocity{};
 	vector<double> flightPathTime{0.0};
+	ogstream gout;
+	
 public:
 	Projectile() 
 	{ 
-		this->mass = 0.0; 
-		this->radius = 0.0; 
+		this->mass = 46.7; 
+		this->radius = 77.445; 
 		Position p;
 		this->flightPathPosition.push_back(p); 
 		Velocity v;
 		this->flightPathVelocity.push_back(v);
+		
 	};
 	void reset()
 	{
@@ -38,9 +42,12 @@ public:
 		flightPathVelocity.push_back(v);
 		flightPathTime.push_back(0.0);
 	}
-	void fire()
+	void fire(double angle)
 	{
-
+		Velocity v;
+		v.setDY(v.computeVerticalComponent(angle, 827.0));
+		v.setDX(v.computeHorizontalComponent(angle, 827.0));
+		this->flightPathVelocity.push_back(v);
 	}
 	void advance()
 	{
@@ -48,7 +55,7 @@ public:
 		Velocity v = flightPathVelocity.back();
 		double t = flightPathTime.back();
 		double speed = v.getSpeed();
-		int altitude = pt.getMetersY();
+		double altitude = pt.getMetersY();
 
 		// modify velocity to handle wind resistance
 		double density = densityFromAltitude(altitude);
@@ -62,7 +69,7 @@ public:
 		// modify velocity to handle gravity
 		double accelerationGravity = gravityFromAltitude(altitude);
 		double velocityGravity = velocityFromAcceleration(accelerationGravity, 0.5);
-		// v.addV(velocityGravity);
+		//v.addV(velocityGravity);
 
 		// inertia
 		pt.addMetersX(velocityFromAcceleration(v.getDX(), 0.5));
@@ -76,7 +83,8 @@ public:
 	}
 	void draw()
 	{
-
+		for (int i = 0; i < flightPathPosition.size(); i++)
+			gout.drawProjectile(flightPathPosition[i], 0.5 * (double)i);
 	}
 	bool flying()
 	{
