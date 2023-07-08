@@ -42,12 +42,20 @@ public:
 		flightPathVelocity.push_back(v);
 		flightPathTime.push_back(0.0);
 	}
-	void fire(double angle)
+	void fire(double rAngle, double time)
 	{
 		Velocity v;
-		v.setDY(v.computeVerticalComponent(angle, 827.0));
-		v.setDX(v.computeHorizontalComponent(angle, 827.0));
+		/*double rAngle = radiansFromDegrees(angle);*/
+		double dx = v.computeHorizontalComponent(rAngle, 827.0);
+		double dy = v.computeVerticalComponent(rAngle, 827.0);
+		v.setDX(v.computeVelocity(dx, 0, time));
+		v.setDY(v.computeVelocity(dy, 9.807, time));
 		this->flightPathVelocity.push_back(v);
+		Position p;
+		p.setMetersX(computeDistance(p.getMetersX(), v.getDX(), 0, time));
+		p.setMetersY(computeDistance(p.getMetersY(), v.getDY(), gravityFromAltitude(p.getMetersY()), time));
+		this->flightPathPosition.push_back(p);
+		this->flightPathTime.push_back(time);
 	}
 	void advance()
 	{
@@ -83,12 +91,26 @@ public:
 	}
 	void draw()
 	{
+	    for (int i = 0; i < 20; i++)
+	    {
+		  // this bullet is moving left at 1 pixel per frame
+		  double x = flightPathPosition[i].getPixelsX();
+		  x -= 1.0;
+		  if (x < 0)
+			 x = 400.0;
+		  flightPathPosition[i].setPixelsX(x);
+	    }
+		
 		for (int i = 0; i < flightPathPosition.size(); i++)
 			gout.drawProjectile(flightPathPosition[i], 0.5 * (double)i);
 	}
 	bool flying()
 	{
-		return true;
+		Position pt = flightPathPosition.back();
+		double altitude = pt.getMetersY();
+		if (altitude >= 0){ return true; }
+		else { return false; }
+		
 	}
 
 	//getters
@@ -311,6 +333,18 @@ public:
 	double computeLinearInterpolation(double v, double V0, double C0, double V1, double C1)
 	{
 		return C0 + ((v - V0) * (C1 - C0)) / (V1 - V0);
+	}
+
+	double computeDistance(double s, double v, double a, double t)
+	{
+		double newS = s + v * t + 0.5 * a * (pow(t, 2));
+		return newS;
+	}
+	double radiansFromDegrees(double d)
+	{
+		double pi = 2 * acos(0.0);
+		double r = d * (pi / 180);
+		return r;
 	}
 
 };

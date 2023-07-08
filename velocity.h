@@ -91,6 +91,11 @@ public:
 		double x = sin(a) * total;
 		return x;
 	}
+	double computeVelocity(double v, double a, double t)
+	{
+		double newV = v + a * t;
+		return newV;
+	}
 private:
 	double dx;
 	double dy;
