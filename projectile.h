@@ -89,17 +89,9 @@ public:
 		flightPathTime.push_back(t + 0.5);
 
 	}
-	void draw()
+	void draw() 
 	{
-	    for (int i = 0; i < 20; i++)
-	    {
-		  // this bullet is moving left at 1 pixel per frame
-		  double x = flightPathPosition[i].getPixelsX();
-		  x -= 1.0;
-		  if (x < 0)
-			 x = 400.0;
-		  flightPathPosition[i].setPixelsX(x);
-	    }
+	    
 		
 		for (int i = 0; i < flightPathPosition.size(); i++)
 			gout.drawProjectile(flightPathPosition[i], 0.5 * (double)i);
