@@ -21,15 +21,15 @@ private:
 	
 public:
 	Projectile() 
-	{ 
-		this->mass = 46.7; 
-		this->radius = 77.445; 
+	{
+		this->mass = 46.7;
+		this->radius = 77.445;
 		Position p;
-		this->flightPathPosition.push_back(p); 
+		this->flightPathPosition.push_back(p);
 		Velocity v;
 		this->flightPathVelocity.push_back(v);
-		
-	};
+	}
+	
 	void reset()
 	{
 		flightPathPosition.clear();
@@ -42,7 +42,7 @@ public:
 		flightPathVelocity.push_back(v);
 		flightPathTime.push_back(0.0);
 	}
-	void fire(double rAngle, double time)
+	void fire(double rAngle, double time, Position initialPT)
 	{
 		Velocity v;
 		/*double rAngle = radiansFromDegrees(angle);*/
@@ -52,12 +52,12 @@ public:
 		v.setDY(v.computeVelocity(dy, 9.807, time));
 		this->flightPathVelocity.push_back(v);
 		Position p;
-		p.setMetersX(computeDistance(p.getMetersX(), v.getDX(), 0, time));
-		p.setMetersY(computeDistance(p.getMetersY(), v.getDY(), gravityFromAltitude(p.getMetersY()), time));
+		p.setMetersX(computeDistance(initialPT.getMetersX(), v.getDX(), 0, time));
+		p.setMetersY(computeDistance(initialPT.getMetersY(), v.getDY(), gravityFromAltitude(p.getMetersY()), time));
 		this->flightPathPosition.push_back(p);
 		this->flightPathTime.push_back(time);
 	}
-	void advance()
+	void advance(double angle)
 	{
 		Position pt = flightPathPosition.back();
 		Velocity v = flightPathVelocity.back();
@@ -71,13 +71,21 @@ public:
 		double windResistance = forceFromDrag(density, dragCoefficient, radius, speed);
 		double accelerationDrag = accelerationFromForce(windResistance, mass);
 		double velocityWind = velocityFromAcceleration(accelerationDrag, 0.5);
+		cout << velocityWind << ", ";
+		Velocity v1;
+		v1.setDxDy(v1.computeHorizontalComponent(velocityWind, angle),v1.computeVerticalComponent(velocityWind, angle));
+		//v1.reverse();
+		v.addV(v1);
 		// velocityWind.reverse();
 		// v.addV(velocityWind);
 
 		// modify velocity to handle gravity
 		double accelerationGravity = gravityFromAltitude(altitude);
 		double velocityGravity = velocityFromAcceleration(accelerationGravity, 0.5);
-		//v.addV(velocityGravity);
+		Velocity v2;
+		v2.setDY(velocityGravity);
+		v2.reverse();
+		v.addV(v2);
 
 		// inertia
 		pt.addMetersX(velocityFromAcceleration(v.getDX(), 0.5));
@@ -91,10 +99,16 @@ public:
 	}
 	void draw() 
 	{
-	    
-		
-		for (int i = 0; i < flightPathPosition.size(); i++)
-			gout.drawProjectile(flightPathPosition[i], 0.5 * (double)i);
+		if (flightPathPosition.size() < 20)
+		{
+			for (int i = 0; i < flightPathPosition.size(); i++)
+				gout.drawProjectile(flightPathPosition[flightPathPosition.size() - i - 1], 0.5 * (double)i);
+		}
+		else
+		{
+			for (int i = 0; i < 20; i++)
+				gout.drawProjectile(flightPathPosition[flightPathPosition.size()-i-1], 0.5 * (double)i);
+		}
 	}
 	bool flying()
 	{
@@ -148,7 +162,7 @@ public:
 	{
 		this->radius = radius;
 	}
-
+	
 	// physics
 	struct TableEntry 
 	{
@@ -311,6 +325,7 @@ public:
 
 	double velocityFromAcceleration(double acc, double t)
 	{
+
 		return acc * t;
 	}
 	double forceFromDrag(double d, double drag, double r, double v)

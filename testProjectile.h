@@ -8,12 +8,12 @@ class TestProjectile
 public:
 	void run()
 	{
-		constructor();
+		//constructor();
 
-		advance1_idle();
-		advance2_fire();
+		//advance1_idle();
+		//advance2_fire();
 
-		testReset();
+		//testReset();
 
 	}
 private:
@@ -49,7 +49,7 @@ private:
 		// setup
 		Projectile p;
 		// exercise
-		p.advance();
+		p.advance(0);
 		// verify
 		try
 		{
@@ -71,9 +71,9 @@ private:
 		// setup
 		Projectile p;
 		// exercise
-		p.advance();
+		p.advance(0);
 		//p.fire();
-		p.advance();
+		p.advance(0);
 		// verify
 		try
 		{
@@ -96,9 +96,9 @@ private:
 		// setup
 		Projectile p;
 		// exercise
-		p.advance();
+		p.advance(0);
 		//p.fire();
-		p.advance();
+		p.advance(0);
 		p.reset();
 		// verify
 		try

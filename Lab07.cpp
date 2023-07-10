@@ -39,6 +39,7 @@ public:
       // Generate the ground and set the vertical position of the howitzer.
       ground.reset(ptHowitzer);
 
+
       // This is to make the bullet travel across the screen. Notice how there are 
       // 20 pixels, each with a different age. This gives the appearance
       // of a trail that fades off in the distance.
@@ -56,6 +57,7 @@ public:
    double angle;                  // angle of the howitzer 
    double time;                   // amount of time since the last firing
    Projectile projectile;
+   
 };
 
 
@@ -89,10 +91,10 @@ void callBack(const Interface* pUI, void* p)
       pDemo->angle += (pDemo->angle >= 0 ? 0.003 : -0.003);
 
    // fire that gun
-   if (pUI->isSpace())
+   if (pUI->isSpace() && not pDemo->projectile.flying())
    {
        pDemo->time = 0.0;
-       pDemo->projectile.fire(pDemo->angle, pDemo->time);
+       pDemo->projectile.fire(pDemo->angle, pDemo->time, pDemo->ptHowitzer);
    }
       
 
@@ -101,7 +103,7 @@ void callBack(const Interface* pUI, void* p)
    //
    if (pDemo->projectile.flying())
    {
-       pDemo->projectile.advance();
+       pDemo->projectile.advance(pDemo->angle);
        // advance time by half a second.
        pDemo->time += 0.5;
    }
@@ -136,10 +138,34 @@ void callBack(const Interface* pUI, void* p)
    pDemo->projectile.draw();
 
    // draw some text on the screen
-   gout.setf(ios::fixed | ios::showpoint);
-   gout.precision(1);
-   gout << "Time since the bullet was fired: "
-        << pDemo->time << "s\n";
+   if (not pDemo->projectile.flying())
+   {
+       Position statusTextPosition;
+       statusTextPosition.setPixelsX(pDemo->ptUpperRight.getPixelsX() / 5 * 4);
+       statusTextPosition.setPixelsY(pDemo->ptUpperRight.getPixelsY() / 5 * 4.5);
+       gout.setPosition(statusTextPosition);
+       gout.setf(ios::fixed | ios::showpoint);
+       gout.precision(1);
+       gout << "angle: "
+           << pDemo->angle << "degrees\n";
+   }
+   else
+   {
+       Position statusTextPosition;
+       statusTextPosition.setPixelsX(pDemo->ptUpperRight.getPixelsX() / 5 * 4);
+       statusTextPosition.setPixelsY(pDemo->ptUpperRight.getPixelsY() / 5 * 4.5);
+       gout.setPosition(statusTextPosition);
+       gout.setf(ios::fixed | ios::showpoint);
+       gout.precision(1);
+       gout << "altitude: \t"
+           << pDemo->projectile.getAltitude() << "m\n";
+       gout << "speed: \t"
+           << pDemo->projectile.getSpeed() << "m/s\n";
+       gout << "distance: \t"
+           << pDemo->projectile.getFlightDistance() << "m\n";
+       gout << "hang time: \t"
+           << pDemo->projectile.getFlightTime() << "s\n";
+   }
 }
 
 double Position::metersFromPixels = 40.0;

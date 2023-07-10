@@ -73,8 +73,8 @@ public:
 	}
 	void addV(Velocity velocity)
 	{
-		this->dx = velocity.dx;
-		this->dy = velocity.dy;
+		this->dx += velocity.dx;
+		this->dy += velocity.dy;
 	}
 	void reverse()
 	{
