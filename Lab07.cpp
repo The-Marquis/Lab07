@@ -91,7 +91,7 @@ void callBack(const Interface* pUI, void* p)
       pDemo->angle += (pDemo->angle >= 0 ? 0.003 : -0.003);
 
    // fire that gun
-   if (pUI->isSpace() && not pDemo->projectile.flying())
+   if (pUI->isSpace() && not pDemo->projectile.flying(pDemo->ground))
    {
        pDemo->time = 0.0;
        pDemo->projectile.fire(pDemo->angle, pDemo->time, pDemo->ptHowitzer);
@@ -101,7 +101,7 @@ void callBack(const Interface* pUI, void* p)
    //
    // perform all the game logic
    //
-   if (pDemo->projectile.flying())
+   if (pDemo->projectile.flying(pDemo->ground))
    {
        pDemo->projectile.advance(pDemo->angle);
        // advance time by half a second.
@@ -138,7 +138,7 @@ void callBack(const Interface* pUI, void* p)
    pDemo->projectile.draw();
 
    // draw some text on the screen
-   if (not pDemo->projectile.flying())
+   if (not pDemo->projectile.flying(pDemo->ground))
    {
        Position statusTextPosition;
        statusTextPosition.setPixelsX(pDemo->ptUpperRight.getPixelsX() / 5 * 4);
@@ -147,7 +147,7 @@ void callBack(const Interface* pUI, void* p)
        gout.setf(ios::fixed | ios::showpoint);
        gout.precision(1);
        gout << "angle: "
-           << pDemo->angle << "degrees\n";
+           << pDemo->angle * (180/3.14) << "degrees\n";
    }
    else
    {
