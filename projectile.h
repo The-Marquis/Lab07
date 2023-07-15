@@ -88,8 +88,8 @@ public:
 		v.addV(v2);
 
 		// inertia
-		pt.addMetersX(velocityFromAcceleration(v.getDX(), 0.5));
-		pt.addMetersY(velocityFromAcceleration(v.getDY(), 0.5));
+		pt.addMetersX(velocityFromAcceleration(v.getDX(), 0.5)/2);
+		pt.addMetersY(velocityFromAcceleration(v.getDY(), 0.5)/2);
 
 		// add to back of flight path
 		flightPathPosition.push_back(pt);
@@ -114,7 +114,7 @@ public:
 	{
 		Position pt = flightPathPosition.back();
 		double altitude = pt.getMetersY();
-		if (altitude >= 0){ return true; }
+		if (altitude > 0){ return true; }
 		else { return false; }
 		
 	}
