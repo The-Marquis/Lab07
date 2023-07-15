@@ -70,8 +70,7 @@ public:
 		double dragCoefficient = dragFromSpeed(speed, altitude);
 		double windResistance = forceFromDrag(density, dragCoefficient, radius, speed);
 		double accelerationDrag = accelerationFromForce(windResistance, mass);
-		double velocityWind = velocityFromAcceleration(accelerationDrag, 0.5);
-		cout << velocityWind << ", ";
+		double velocityWind = velocityFromAcceleration(accelerationDrag, 1);
 		Velocity v1;
 		v1.setDxDy(v1.computeHorizontalComponent(velocityWind, angle),v1.computeVerticalComponent(velocityWind, angle));
 		//v1.reverse();
@@ -81,20 +80,20 @@ public:
 
 		// modify velocity to handle gravity
 		double accelerationGravity = gravityFromAltitude(altitude);
-		double velocityGravity = velocityFromAcceleration(accelerationGravity, 0.5);
+		double velocityGravity = velocityFromAcceleration(accelerationGravity, 1);
 		Velocity v2;
 		v2.setDY(velocityGravity);
 		v2.reverse();
 		v.addV(v2);
 
 		// inertia
-		pt.addMetersX(velocityFromAcceleration(v.getDX(), 0.5)/2);
-		pt.addMetersY(velocityFromAcceleration(v.getDY(), 0.5)/2);
+		pt.addMetersX(velocityFromAcceleration(v.getDX(), 1)/2.5);
+		pt.addMetersY(velocityFromAcceleration(v.getDY(), 1)/2.5);
 
 		// add to back of flight path
 		flightPathPosition.push_back(pt);
 		flightPathVelocity.push_back(v);
-		flightPathTime.push_back(t + 0.5);
+		flightPathTime.push_back(t + 1);
 
 	}
 	void draw() 
@@ -110,11 +109,11 @@ public:
 				gout.drawProjectile(flightPathPosition[flightPathPosition.size()-i-1], 0.5 * (double)i);
 		}
 	}
-	bool flying()
+	bool flying(Ground ground)
 	{
 		Position pt = flightPathPosition.back();
 		double altitude = pt.getMetersY();
-		if (altitude > 0){ return true; }
+		if (altitude >= 0){ return true; }
 		else { return false; }
 		
 	}
